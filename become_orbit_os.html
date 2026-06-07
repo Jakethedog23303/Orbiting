@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Become Orbit OS</title>
+  <style>
+    :root{
+      --bg:#f6efe4;
+      --card:#fffdfa;
+      --ink:#1d1b18;
+      --muted:#756d63;
+      --line:#e5d6c4;
+      --accent:#d97832;
+      --accent2:#365f91;
+      --green:#3c8a58;
+      --red:#b34b3d;
+      --soft:#efe1cf;
+      --gold:#bc7a1f;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      padding:16px;
+    }
+    .app{max-width:920px;margin:0 auto}
+    h1{
+      margin:8px 0 4px;
+      font-size:clamp(2.35rem,8vw,5.4rem);
+      letter-spacing:-.075em;
+      line-height:.92;
+    }
+    h2{margin:0 0 8px;letter-spacing:-.04em}
+    h3{margin:14px 0 5px}
+    .subtitle{color:var(--muted);font-size:1.05rem;line-height:1.45;margin-bottom:16px}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:18px;
+      box-shadow:0 12px 35px rgba(63,43,22,.08);
+      margin-bottom:15px;
+    }
+    .grid{display:grid;gap:10px}
+    @media(min-width:760px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:repeat(3,1fr)}}
+    button{
+      border:0;
+      border-radius:999px;
+      padding:14px 18px;
+      font-size:1rem;
+      font-weight:850;
+      cursor:pointer;
+      background:var(--accent);
+      color:white;
+      margin:5px 5px 0 0;
+    }
+    button.secondary{background:var(--soft);color:var(--ink)}
+    button.blue{background:var(--accent2)}
+    button.good{background:var(--green)}
+    button.red{background:var(--red)}
+    button.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+    textarea,input,select{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fffdf8;
+      color:var(--ink);
+      border-radius:18px;
+      padding:13px;
+      font:inherit;
+      margin:6px 0;
+    }
+    textarea{min-height:140px;resize:vertical;line-height:1.45}
+    .tiny{color:var(--muted);font-size:.94rem;line-height:1.45}
+    .hidden{display:none!important}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .tab{background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+    .tab.active{background:var(--accent);color:white;border-color:var(--accent)}
+    .identity{
+      padding:13px;
+      border:1px solid var(--line);
+      background:#fffdf8;
+      border-radius:18px;
+      cursor:pointer;
+      min-height:90px;
+    }
+    .identity.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(217,120,50,.16)}
+    .identity b{display:block;font-size:1.06rem;margin-bottom:5px}
+    .pill{
+      display:inline-block;
+      background:var(--soft);
+      color:var(--muted);
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:800;
+      margin:3px;
+    }
+    .orbit{
+      text-align:center;
+      padding:22px 8px 14px;
+    }
+    .label{
+      color:var(--gold);
+      text-transform:uppercase;
+      font-size:.82rem;
+      letter-spacing:.1em;
+      font-weight:950;
+    }
+    .now{
+      font-size:clamp(2rem,8vw,4.7rem);
+      line-height:1.01;
+      font-weight:950;
+      letter-spacing:-.07em;
+      margin:18px 0 10px;
+      overflow-wrap:anywhere;
+    }
+    .why{
+      max-width:680px;
+      margin:0 auto 14px;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:1.02rem;
+    }
+    .progress-wrap{
+      width:100%;
+      height:13px;
+      background:var(--soft);
+      border-radius:999px;
+      overflow:hidden;
+      margin:12px 0 6px;
+    }
+    .progress{height:100%;background:var(--accent);width:0%;transition:.2s}
+    .list{display:grid;gap:8px;margin-top:12px}
+    .item{
+      border:1px solid var(--line);
+      background:#fffdf8;
+      border-radius:16px;
+      padding:11px 13px;
+      color:var(--muted);
+    }
+    .item.active{border-color:var(--accent);color:var(--ink);font-weight:850}
+    .item.done{color:var(--green);text-decoration:line-through}
+    .smallRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .quote{
+      background:#2a2520;
+      color:#fff7ec;
+      border-radius:22px;
+      padding:18px;
+      font-size:1.2rem;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+  </style>
+</head>
+<body>
+<main class="app">
+  <h1>Become Orbit OS</h1>
+  <div class="subtitle">Turn “everything I want to become” into one visible orbit at a time. No mountain. Just the next rep.</div>
+
+  <div class="tabs">
+    <button class="tab active" id="homeTab" onclick="showTab('home')">Today</button>
+    <button class="tab" id="buildTab" onclick="showTab('build')">Build Orbit</button>
+    <button class="tab" id="libraryTab" onclick="showTab('library')">Library</button>
+    <button class="tab" id="settingsTab" onclick="showTab('settings')">Rules</button>
+  </div>
+
+  <section class="card" id="home">
+    <div class="quote">Become by doing the smallest visible rep.</div>
+    <h2 style="margin-top:16px">Choose today’s identity</h2>
+    <p class="tiny">Pick one. The app gives you a sequence and only shows one orbit at a time.</p>
+    <div class="grid three" id="identityGrid"></div>
+    <div style="margin-top:12px">
+      <button onclick="startSelected()">Start selected orbit</button>
+      <button class="secondary" onclick="quickStartDay()">Make mixed day orbit</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="runCard">
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="tiny" id="counter"></div>
+    <div class="orbit">
+      <div class="label" id="orbitLabel">Do this now</div>
+      <div class="now" id="currentTask"></div>
+      <div class="why" id="whyText"></div>
+      <button class="good" onclick="completeTask()">Done → next orbit</button>
+      <button class="secondary" onclick="backTask()">Back</button>
+      <button class="red" onclick="pauseOrbit()">Pause</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="mapCard">
+    <h2>Orbit Map</h2>
+    <div id="orbitTags"></div>
+    <div class="list" id="taskList"></div>
+  </section>
+
+  <section class="card hidden" id="build">
+    <h2>Build your own Orbit</h2>
+    <p class="tiny">Use this when you have a real task: kitchen, post office, portfolio, shopping, studying, music, cleaning, anything.</p>
+    <label class="tiny">Orbit name</label>
+    <input id="customName" placeholder="e.g. Kitchen Reset, Art Portfolio, Supermarket Trip">
+    <label class="tiny">Why this matters</label>
+    <input id="customWhy" placeholder="e.g. Close the kitchen loop so I can think clearly">
+    <label class="tiny">Steps, one per line</label>
+    <textarea id="customSteps" placeholder="Clear plates&#10;Put rubbish in bin&#10;Wipe counter&#10;Wash one pan&#10;Put food away"></textarea>
+    <button onclick="startCustom()">Start this orbit</button>
+    <button class="secondary" onclick="saveCustom()">Save to library</button>
+  </section>
+
+  <section class="card hidden" id="library">
+    <h2>Saved Orbit Library</h2>
+    <p class="tiny">These are reusable sequences. Start one whenever life becomes foggy.</p>
+    <div class="list" id="savedList"></div>
+  </section>
+
+  <section class="card hidden" id="settings">
+    <h2>The Rules</h2>
+    <div class="grid two">
+      <div class="card" style="box-shadow:none">
+        <h3>Orbit Law</h3>
+        <p class="tiny">You are not allowed to fight the whole day. You are only allowed to complete the current orbit.</p>
+      </div>
+      <div class="card" style="box-shadow:none">
+        <h3>Recovery Law</h3>
+        <p class="tiny">If you fall off, do not rebuild your life. Press start and do the next visible rep.</p>
+      </div>
+      <div class="card" style="box-shadow:none">
+        <h3>Identity Law</h3>
+        <p class="tiny">“I am becoming X” means “I repeat the reps of X.”</p>
+      </div>
+      <div class="card" style="box-shadow:none">
+        <h3>Anti-chaos Law</h3>
+        <p class="tiny">Lists are for capture. Orbits are for action. Never stare at the whole list while doing.</p>
+      </div>
+    </div>
+    <button class="red" onclick="clearAll()">Clear all saved data</button>
+  </section>
+</main>
+
+<script>
+const defaultOrbits = [
+  {
+    id:"clear_house",
+    name:"Clear House Operator",
+    tag:"environment",
+    desc:"Make the house usable without seeing the whole mess.",
+    why:"A clear space lowers activation energy. You are not cleaning the house; you are closing one loop.",
+    steps:["Choose one surface only","Remove rubbish from that surface","Put obvious items where they belong","Make one washing-up pile","Wash or load five items","Wipe the surface","Stand back and mark the orbit complete"]
+  },
+  {
+    id:"shopper",
+    name:"Food & Shopping Operator",
+    tag:"food",
+    desc:"Get food without overwhelm.",
+    why:"Food is infrastructure. You are buying energy for future you.",
+    steps:["Open your shopping list","Get the first item only","Put it in basket","Get the next item only","Check protein source","Check easy carb source","Check fruit or veg","Pay","Put receipt away","Return home and put cold food away first"]
+  },
+  {
+    id:"cook",
+    name:"Meal Maker",
+    tag:"food",
+    desc:"Make food one action at a time.",
+    why:"Cooking becomes simple when the recipe is not a mountain.",
+    steps:["Clear one small cooking space","Get pan or tray","Get ingredients out","Do the first prep action","Start heat or oven if needed","Cook the main item","Set a timer","Clean one thing while waiting","Plate food","Save leftovers or tidy one thing"]
+  },
+  {
+    id:"portfolio",
+    name:"Art Portfolio Builder",
+    tag:"art",
+    desc:"Build an art course portfolio in finished reps.",
+    why:"A portfolio is not one giant proof of worth. It is a sequence of visible finished pieces.",
+    steps:["Choose one piece to include","Photograph or scan it","Crop/straighten the image","Write one sentence: what it is","Write one sentence: what you explored","Put it in the portfolio folder","Choose next piece","Stop after one complete upload if tired"]
+  },
+  {
+    id:"musician",
+    name:"Musician",
+    tag:"music",
+    desc:"Become better by finishing small musical reps.",
+    why:"Music improves when the loop is small enough to repeat without fear.",
+    steps:["Pick one song or bar","Listen once","Tap the pulse","Play the easiest version slowly","Repeat the hard change three times","Play the whole small section","Record one take","Write the next practice target"]
+  },
+  {
+    id:"student",
+    name:"Foundation Student",
+    tag:"study",
+    desc:"Build maths, science, languages, and reading from foundations.",
+    why:"You do not need to understand the whole subject today. You need one clean rep.",
+    steps:["Choose one tiny concept","Read one explanation","Copy one example","Do one guided example","Do one from memory","Check error without shame","Write the rule in your own words","Save one next question"]
+  },
+  {
+    id:"athlete",
+    name:"Athlete",
+    tag:"body",
+    desc:"Train the body without chaos.",
+    why:"Athletic progress is reps, recovery, and consistency — not panic.",
+    steps:["Put training clothes on","Drink water","Do five minutes easy warm-up","Do mobility for hips/shoulders","Do today’s main rep or session","Stop before reckless intensity","Log what you did","Start recovery: food, shower, stretch, sleep"]
+  },
+  {
+    id:"socialrisk",
+    name:"Social Risk Builder",
+    tag:"social",
+    desc:"Make being seen less scary through tiny reps.",
+    why:"Social risk becomes normal when recovery becomes fast.",
+    steps:["Pick one tiny social rep","Say hello or send one message","Let it be imperfect","Notice the body reaction","Do not replay it for more than 10 seconds","Write: I survived","Pick the next tiny rep for tomorrow"]
+  },
+  {
+    id:"admin",
+    name:"Life Admin Operator",
+    tag:"admin",
+    desc:"Close deadlines, messages, forms, and errands.",
+    why:"Admin is only scary when it is undefined. Define the next visible click.",
+    steps:["Write the admin loop name","Open the relevant app/page","Find the next required action","Do only that action","Save/submit/file it","Write what remains","Schedule or start the next admin orbit"]
+  },
+  {
+    id:"creator",
+    name:"InventInc Builder",
+    tag:"systems",
+    desc:"Build tools that make growth feel natural.",
+    why:"Your scarce value is turning chaos into repeatable loops for yourself and others.",
+    steps:["Pick one painful human loop","Write the before state","Write the one visible rep","Sketch one screen/card","Make the simplest prototype","Test it on yourself","Save what improved","Choose the next friction to remove"]
+  }
+];
+
+let selectedId = localStorage.getItem("selectedIdentity") || "clear_house";
+let currentOrbit = null;
+let currentIndex = 0;
+let savedCustom = JSON.parse(localStorage.getItem("savedCustomOrbits") || "[]");
+
+function showTab(id){
+  ["home","build","library","settings"].forEach(x => document.getElementById(x).classList.add("hidden"));
+  ["homeTab","buildTab","libraryTab","settingsTab"].forEach(x => document.getElementById(x).classList.remove("active"));
+  document.getElementById(id).classList.remove("hidden");
+  document.getElementById(id+"Tab").classList.add("active");
+  if(id==="library") renderLibrary();
+}
+
+function renderIdentities(){
+  const grid = document.getElementById("identityGrid");
+  grid.innerHTML = "";
+  defaultOrbits.forEach(o=>{
+    const div = document.createElement("div");
+    div.className = "identity" + (o.id===selectedId ? " active" : "");
+    div.onclick = () => {selectedId=o.id; localStorage.setItem("selectedIdentity",selectedId); renderIdentities();}
+    div.innerHTML = `<b>${o.name}</b><span class="pill">${o.tag}</span><div class="tiny">${o.desc}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function startSelected(){
+  const orbit = defaultOrbits.find(o=>o.id===selectedId);
+  startOrbit(orbit);
+}
+
+function quickStartDay(){
+  const mixed = {
+    id:"mixed_day",
+    name:"Today’s Become Orbit",
+    tag:"mixed",
+    desc:"A balanced day made from the person you want to become.",
+    why:"Today is not a vague life transformation. It is a few closed loops.",
+    steps:[
+      "Clear one visible surface",
+      "Get water or food into your system",
+      "Do one admin action you are avoiding",
+      "Do one body rep: walk, stretch, or train",
+      "Do one learning rep",
+      "Do one creative rep",
+      "Send or say one honest thing",
+      "Prepare one thing for tomorrow"
+    ]
+  };
+  startOrbit(mixed);
+}
+
+function startOrbit(orbit){
+  currentOrbit = JSON.parse(JSON.stringify(orbit));
+  currentIndex = 0;
+  saveRun();
+  document.getElementById("runCard").classList.remove("hidden");
+  document.getElementById("mapCard").classList.remove("hidden");
+  showTab("home");
+  renderRun();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function saveRun(){
+  localStorage.setItem("currentOrbit", JSON.stringify(currentOrbit));
+  localStorage.setItem("currentIndex", String(currentIndex));
+}
+
+function renderRun(){
+  if(!currentOrbit) return;
+  const total = currentOrbit.steps.length;
+  const done = Math.min(currentIndex,total);
+  document.getElementById("progress").style.width = total ? `${(done/total)*100}%` : "0%";
+  document.getElementById("counter").textContent = currentIndex < total ? `${currentOrbit.name}: ${currentIndex+1} of ${total}` : `${currentOrbit.name}: complete`;
+  document.getElementById("orbitLabel").textContent = currentIndex < total ? "Do this now" : "Orbit complete";
+  document.getElementById("currentTask").textContent = currentIndex < total ? currentOrbit.steps[currentIndex] : "Closed loop.";
+  document.getElementById("whyText").textContent = currentIndex < total ? currentOrbit.why : "You became this a little bit more because you completed the reps.";
+
+  const tags = document.getElementById("orbitTags");
+  tags.innerHTML = `<span class="pill">${currentOrbit.tag || "orbit"}</span><span class="pill">${currentOrbit.steps.length} reps</span>`;
+
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+  currentOrbit.steps.forEach((s,i)=>{
+    const div=document.createElement("div");
+    div.className="item"+(i<currentIndex?" done":i===currentIndex?" active":"");
+    div.textContent=`${i+1}. ${s}`;
+    list.appendChild(div);
+  });
+  saveRun();
+}
+
+function completeTask(){
+  if(!currentOrbit) return;
+  if(currentIndex < currentOrbit.steps.length) currentIndex++;
+  renderRun();
+}
+
+function backTask(){
+  if(currentIndex>0) currentIndex--;
+  renderRun();
+}
+
+function pauseOrbit(){
+  document.getElementById("runCard").classList.add("hidden");
+  document.getElementById("mapCard").classList.add("hidden");
+}
+
+function parseSteps(text){
+  return text.split(/\n+/).map(x=>x.replace(/^\s*[-•*0-9.)]+/,"").trim()).filter(Boolean);
+}
+
+function startCustom(){
+  const name = document.getElementById("customName").value.trim() || "Custom Orbit";
+  const why = document.getElementById("customWhy").value.trim() || "This closes one loop.";
+  const steps = parseSteps(document.getElementById("customSteps").value);
+  if(!steps.length){ alert("Add at least one step."); return; }
+  startOrbit({id:"custom_"+Date.now(), name, tag:"custom", desc:"Custom orbit", why, steps});
+}
+
+function saveCustom(){
+  const name = document.getElementById("customName").value.trim() || "Custom Orbit";
+  const why = document.getElementById("customWhy").value.trim() || "This closes one loop.";
+  const steps = parseSteps(document.getElementById("customSteps").value);
+  if(!steps.length){ alert("Add at least one step."); return; }
+  savedCustom.push({id:"saved_"+Date.now(), name, tag:"saved", desc:"Saved custom orbit", why, steps});
+  localStorage.setItem("savedCustomOrbits", JSON.stringify(savedCustom));
+  alert("Saved to library.");
+  renderLibrary();
+}
+
+function renderLibrary(){
+  const box = document.getElementById("savedList");
+  box.innerHTML = "";
+  const all = [...defaultOrbits, ...savedCustom];
+  all.forEach(o=>{
+    const div=document.createElement("div");
+    div.className="item";
+    div.innerHTML = `<b>${o.name}</b><br><span class="tiny">${o.desc || o.why}</span><br><span class="pill">${o.tag || "orbit"}</span> <span class="pill">${o.steps.length} reps</span><br>`;
+    const btn=document.createElement("button");
+    btn.textContent="Start";
+    btn.onclick=()=>startOrbit(o);
+    div.appendChild(btn);
+    box.appendChild(div);
+  });
+}
+
+function clearAll(){
+  if(confirm("Clear saved progress and custom orbits?")){
+    localStorage.removeItem("currentOrbit");
+    localStorage.removeItem("currentIndex");
+    localStorage.removeItem("savedCustomOrbits");
+    savedCustom=[];
+    currentOrbit=null;
+    currentIndex=0;
+    document.getElementById("runCard").classList.add("hidden");
+    document.getElementById("mapCard").classList.add("hidden");
+    renderLibrary();
+  }
+}
+
+window.onload=()=>{
+  renderIdentities();
+  renderLibrary();
+  const saved = localStorage.getItem("currentOrbit");
+  if(saved){
+    currentOrbit=JSON.parse(saved);
+    currentIndex=Number(localStorage.getItem("currentIndex")||0);
+    document.getElementById("runCard").classList.remove("hidden");
+    document.getElementById("mapCard").classList.remove("hidden");
+    renderRun();
+  }
+};
+</script>
+</body>
+</html>
